@@ -4,6 +4,9 @@ import { startRouter } from './router.js';
 import { h, clear, iconNode } from './dom.js';
 import { loadAll, resolveDevMode } from './data.js';
 import { createAuth } from './auth.js';
+import { createStore } from './store.js';
+import { createSync } from './sync.js';
+import { firebaseConfig } from './firebase-config.js';
 import { errorCard } from './ui/common.js';
 
 const VIEWS = {
@@ -12,9 +15,13 @@ const VIEWS = {
   quests: () => import('./ui/quests.js'),
   stats: () => import('./ui/stats.js'),
   profile: () => import('./ui/profile.js'),
+  session: () => import('./ui/session.js'),
 };
 
-const app = { data: null, auth: createAuth(), swReg: null, tab: null };
+const auth = createAuth();
+const store = createStore();
+const sync = createSync({ store, auth, config: firebaseConfig });
+const app = { data: null, auth, store, sync, swReg: null, route: { id: 'map', tab: 'map', params: {} } };
 
 function safeStorage() {
   try {
@@ -38,7 +45,7 @@ function markActive(tabbar, tabId) {
 }
 
 function updateChip(chip) {
-  const s = app.auth.state;
+  const s = auth.state;
   let text = '게스트';
   let warn = true;
   if (s.status === 'signed-in') {
@@ -74,18 +81,19 @@ async function boot() {
 
   const dev = resolveDevMode(window.location.search, safeStorage());
 
-  async function renderTab(tabId) {
-    app.tab = tabId;
-    markActive(tabbar, tabId);
+  async function renderRoute(loc) {
+    app.route = loc;
+    markActive(tabbar, loc.tab);
+    document.body.classList.toggle('in-session', loc.id === 'session');
     if (!app.data) return;
     try {
-      const mod = await VIEWS[tabId]();
-      if (app.tab !== tabId) return; // 비동기 로딩 중 다른 탭으로 이동한 경우
-      mod.render(view, app);
+      const mod = await VIEWS[loc.id]();
+      if (app.route !== loc) return; // 비동기 로딩 중 다른 화면으로 이동한 경우
+      mod.render(view, app, loc.params);
       view.scrollTo?.(0, 0);
     } catch (e) {
       console.error(e);
-      clear(view).append(errorCard(`화면을 그리지 못했습니다: ${e.message}`, () => renderTab(tabId)));
+      clear(view).append(errorCard(`화면을 그리지 못했습니다: ${e.message}`, () => renderRoute(loc)));
     }
   }
 
@@ -94,21 +102,30 @@ async function boot() {
     try {
       app.data = await loadAll({ dev });
       updateChip(chip);
-      renderTab(app.tab ?? 'map');
+      renderRoute(app.route);
     } catch (e) {
       clear(view).append(errorCard(e.message, loadData));
     }
   }
 
-  app.auth.subscribe(() => {
+  auth.subscribe(() => {
     updateChip(chip);
-    if (app.tab === 'profile') renderTab('profile');
+    if (app.route.id === 'profile') renderRoute(app.route);
+  });
+  sync.subscribe(() => {
+    if (app.route.id === 'profile') renderRoute(app.route); // 복습 세션 중에는 다시 그리지 않는다
   });
   updateChip(chip);
 
-  startRouter((tabId) => renderTab(tabId));
+  window.addEventListener('online', () => sync.syncNow());
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && auth.state.status === 'signed-in') sync.schedule();
+  });
+
+  startRouter((loc) => renderRoute(loc));
   await loadData();
-  app.auth.init();
+  sync.start();
+  auth.init();
   app.swReg = await registerServiceWorker();
   console.info(`전기기사 마스터 ${APP_VERSION}`);
 }

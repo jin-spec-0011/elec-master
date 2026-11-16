@@ -65,12 +65,13 @@ export function render(container, app) {
       h('span', { class: 'node-label' }, q.title));
   });
 
+  const pathEl = h('div', { class: 'map-path' }, nodes);
   fill(container,
     pageTitle('1챕터 · 기초'),
     app.data.dev ? notice('개발 모드: 검수 전 카드까지 모두 사용합니다.') : null,
     summaryCard(app.store),
     h('p', { class: 'card-sub' }, `퀘스트 ${rows.length}개 · 사용 가능한 카드 ${cards.length}장 · 노드를 눌러 진행도를 확인하세요.`),
-    h('div', { class: 'map-path' }, nodes),
+    pathEl,
     detail,
     sectionTitle('오늘의 일일 퀘스트'),
     dailies.map((r) => h('div', { class: 'card' },
@@ -79,4 +80,41 @@ export function render(container, app) {
       h('div', { class: 'bar', style: 'margin-top:8px' }, h('span', { style: `width:${r.status === 'done' ? 100 : Math.round(r.ratio * 100)}%` })),
       h('p', { class: 'card-sub', style: 'margin-top:4px' }, `${r.status === 'done' ? r.target : Math.min(r.value, r.target)} / ${r.target}`))),
   );
+  drawConnectors(pathEl, path);
+}
+
+/**
+ * 노드 사이 연결선(SVG). 레이아웃이 끝난 뒤 실제 위치를 재서 곡선으로 잇고, 완료된 구간은 초록으로 칠한다.
+ * 창 크기가 바뀌면 다시 그린다(맵 화면이 사라지면 자동으로 멈춤).
+ */
+function drawConnectors(pathEl, rows) {
+  const draw = () => {
+    if (!pathEl.isConnected) {
+      window.removeEventListener('resize', draw);
+      return;
+    }
+    const box = pathEl.getBoundingClientRect();
+    const centers = [...pathEl.querySelectorAll('.node')].map((n) => {
+      const r = n.getBoundingClientRect();
+      return { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top };
+    });
+    const segs = [];
+    for (let i = 1; i < centers.length; i += 1) {
+      const a = centers[i - 1];
+      const b = centers[i];
+      const my = (a.y + b.y) / 2;
+      const done = rows[i - 1].status === 'done' || rows[i - 1].status === 'skipped';
+      segs.push(`<path d="M${a.x.toFixed(1)} ${a.y.toFixed(1)} C${a.x.toFixed(1)} ${my.toFixed(1)} ${b.x.toFixed(1)} ${my.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}" class="${done ? 'is-done' : ''}"/>`);
+    }
+    pathEl.querySelector('.map-lines')?.remove();
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'map-lines');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('width', String(box.width));
+    svg.setAttribute('height', String(box.height));
+    svg.innerHTML = segs.join(''); // 숫자만 들어가는 정적 문자열
+    pathEl.prepend(svg);
+  };
+  requestAnimationFrame(draw);
+  window.addEventListener('resize', draw);
 }

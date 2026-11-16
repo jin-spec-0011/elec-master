@@ -8,7 +8,8 @@
 |---|---|
 | P1 레포·데이터 준비 | 진행 중 (카드 검수, 퀘스트 CSV 대기) |
 | 문제 생성·검증 파이프라인 (Claude 생성 / Gemini 검수) | **보류 — 별도 프로젝트로 분기** |
-| P4 앱 빌드 | 별도 계획서 승인 후 |
+| P4-1 앱 뼈대(5탭·PWA·로그인 모듈·데이터 로딩) | 구현 완료, 승인 대기 |
+| P4-2~6 연습·문제 엔진·퀘스트 엔진·UI 마감·QA | 승인된 계획서 순서대로 진행 |
 
 ## 데이터
 
@@ -30,10 +31,10 @@ npm test
 
 ## Firebase 설정과 규칙 (전용 Realtime Database)
 
-GOGO와 분리된 **새 Firebase 프로젝트**를 사용합니다. 데이터 경로는 `/elec` 접두를 유지합니다.
+GOGO와 분리된 **새 Firebase 프로젝트(elec-master)** 와 Realtime Database(싱가포르)를 사용합니다. 데이터 경로는 `/elec` 접두를 유지합니다.
 
 1. 새 프로젝트 생성 → Realtime Database를 **잠금 모드**로 생성합니다(테스트 모드 금지).
-2. Authentication → Google 제공업체를 사용 설정하고, 승인된 도메인에 `jin-spec-0011.github.io`를 추가합니다.
+2. Authentication → Sign-in method에서 **이메일/비밀번호**를 사용 설정하고(이메일 링크는 끔), Users → 사용자 추가로 본인 계정을 직접 만듭니다. 계정 생성 후 설정 → 사용자 작업에서 **가입 비활성화**를 켭니다(앱에는 가입 기능이 없음).
 3. 규칙 탭에 `database.rules.json` **전체 내용**을 붙여넣고 게시합니다(루트는 기본 거부).
 4. Rules Playground에서 아래 케이스를 확인합니다.
 
@@ -49,6 +50,13 @@ GOGO와 분리된 **새 Firebase 프로젝트**를 사용합니다. 데이터 �
 
 서비스 계정(Admin SDK)은 규칙을 우회하므로 `pool`·`meta` 쓰기는 서비스 계정으로만 가능합니다.
 GOGO와 UID가 다르므로 GOGO 데이터는 자동으로 이어지지 않습니다.
+
+## 앱 실행과 배포
+
+- 로컬 확인: `python3 -m http.server 8000` 후 `http://localhost:8000/?dev=1` (`?dev=1`은 검수 전 카드까지 사용, `?dev=0`으로 해제).
+- 배포: `main`에 병합하면 GitHub Pages가 자동 게시합니다(`https://jin-spec-0011.github.io/elec-master/`). 서비스워커는 network-first라 배포 때 버전을 올릴 필요가 없습니다.
+- 로그인: 이메일/비밀번호(프로필 탭). `js/firebase-config.js`의 `firebaseConfig`(공개용 값)가 비어 있으면 게스트(로컬) 모드로 동작합니다.
+- 앱 파일을 추가·삭제하면 `sw.js`의 `SHELL_FILES`도 함께 고치세요(`npm test`가 불일치를 잡습니다). 경로는 모두 상대 경로여야 합니다.
 
 ## 보안
 

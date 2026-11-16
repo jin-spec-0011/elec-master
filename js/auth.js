@@ -70,6 +70,7 @@ export function createAuth({ config = firebaseConfig, importer = (url) => import
   const listeners = new Set();
   let sdk = null;
   let auth = null;
+  let fbApp = null;
 
   const set = (patch) => {
     state = { ...state, ...patch };
@@ -86,9 +87,9 @@ export function createAuth({ config = firebaseConfig, importer = (url) => import
     if (!configured) return state;
     try {
       const [appMod, authMod] = await Promise.all([importer(`${CDN}/firebase-app.js`), importer(`${CDN}/firebase-auth.js`)]);
-      const app = appMod.initializeApp(config);
+      fbApp = appMod.initializeApp(config);
       sdk = authMod;
-      auth = authMod.getAuth(app);
+      auth = authMod.getAuth(fbApp);
       authMod.onAuthStateChanged(
         auth,
         (user) =>
@@ -164,6 +165,10 @@ export function createAuth({ config = firebaseConfig, importer = (url) => import
     },
     get configured() {
       return configured;
+    },
+    /** 초기화된 Firebase 앱(Database 연동용). 로그인 모듈 로딩 전에는 null */
+    get app() {
+      return fbApp;
     },
     subscribe(fn) {
       listeners.add(fn);

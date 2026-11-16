@@ -26,6 +26,15 @@ test('실제 database.rules.json 통과, 쓰기 허용 시 실패', () => {
   assert.ok(validateRules(rules).errors.some((e) => /pool/.test(e)));
 });
 
+test('rules: 루트 기본 거부 누락과 elec 외 경로 감지', () => {
+  const noRoot = load('database.rules.json');
+  delete noRoot.rules['.read'];
+  assert.ok(validateRules(noRoot).errors.some((e) => /기본 거부/.test(e)));
+  const extra = load('database.rules.json');
+  extra.rules.gogo = { '.read': true };
+  assert.ok(validateRules(extra).errors.some((e) => /elec 외 경로/.test(e)));
+});
+
 test('cards: strict에서 미검수는 오류, 기본은 경고', () => {
   const doc = {
     count: 1, reviewed: 0,

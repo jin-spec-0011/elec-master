@@ -17,7 +17,7 @@
 | `data/freqmap.json` | 62개 단원 출제비중 | 제공 파일 |
 | `data/src/cards.csv` → `data/cards.json` | 공식카드 100장. `reviewed:true`(검수 OK)만 앱에서 사용 | `npm run convert:cards` |
 | `data/src/quests-ch1.csv` → `data/quests/ch1.json` | 1챕터 퀘스트 | `npm run convert:quests` |
-| `database.rules.json` | `/elec` 규칙 블록 (기존 GOGO 규칙에 **수동 병합**) | 직접 작성 |
+| `database.rules.json` | 전용 Realtime Database 전체 규칙 (콘솔에 그대로 붙여넣기) | 직접 작성 |
 
 CSV는 엑셀에서 **"CSV UTF-8"** 로 저장하세요. 수정 후에는 변환 → 검증 순서로 실행합니다.
 
@@ -28,11 +28,14 @@ npm run validate:strict   # P1 완료 판정: 검수 OK가 아닌 카드가 있�
 npm test
 ```
 
-## Firebase 규칙 병합과 시뮬레이션 (Rules Playground)
+## Firebase 설정과 규칙 (전용 Realtime Database)
 
-1. 콘솔의 현재 규칙 전체를 복사해 백업합니다.
-2. `database.rules.json`의 `elec` 블록을 기존 `rules` 객체 안에 추가합니다 (기존 키는 건드리지 않음).
-3. 게시 전에 Rules Playground에서 아래 케이스를 확인합니다.
+GOGO와 분리된 **새 Firebase 프로젝트**를 사용합니다. 데이터 경로는 `/elec` 접두를 유지합니다.
+
+1. 새 프로젝트 생성 → Realtime Database를 **잠금 모드**로 생성합니다(테스트 모드 금지).
+2. Authentication → Google 제공업체를 사용 설정하고, 승인된 도메인에 `jin-spec-0011.github.io`를 추가합니다.
+3. 규칙 탭에 `database.rules.json` **전체 내용**을 붙여넣고 게시합니다(루트는 기본 거부).
+4. Rules Playground에서 아래 케이스를 확인합니다.
 
 | 경로 | 동작 | 인증 | 기대 |
 |---|---|---|---|
@@ -42,9 +45,10 @@ npm test
 | `/elec/meta/genlog/20261117` | 쓰기 | 로그인 | 거부 |
 | `/elec/users/{내 uid}/attempts/q1` | 읽기·쓰기 | 내 uid | 허용 |
 | `/elec/users/{다른 uid}/attempts/q1` | 읽기·쓰기 | 내 uid | 거부 |
-| 기존 GOGO 경로 | 기존 동작 | 기존 | 변화 없음 |
+| `/elec/x` 또는 `/` (elec 밖) | 읽기·쓰기 | 로그인 | 거부 |
 
 서비스 계정(Admin SDK)은 규칙을 우회하므로 `pool`·`meta` 쓰기는 서비스 계정으로만 가능합니다.
+GOGO와 UID가 다르므로 GOGO 데이터는 자동으로 이어지지 않습니다.
 
 ## 보안
 

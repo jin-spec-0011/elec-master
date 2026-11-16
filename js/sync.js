@@ -1,5 +1,5 @@
 // 학습 기록 ↔ Firebase Realtime Database 동기화. 오프라인이면 로컬에 쌓아 두었다가 연결되면 올린다.
-// 경로: elec/users/{uid}/cards/{카드ID}, daily/{yyyymmdd}, drill/{과목}
+// 경로: elec/users/{uid}/ cards/{카드ID}, daily/{yyyymmdd}, drill/{과목}, quests/{퀘스트ID}, xplog/{yyyymmdd}/{D-xx}, boss/{ch1}
 import { FIREBASE_SDK_VERSION, isDatabaseConfigured } from './auth.js';
 
 const CDN = `https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}`;
@@ -80,9 +80,9 @@ export function createSync({ store, auth, config, importer = (url) => import(url
       store.attachUser(user.uid, snap.val() ?? {});
       const dirty = store.dirtySnapshot();
       const updates = {};
-      for (const [id, s] of Object.entries(dirty.cards)) updates[`cards/${id}`] = s;
-      for (const [d, v] of Object.entries(dirty.daily)) updates[`daily/${d}`] = v;
-      for (const [k, v] of Object.entries(dirty.drill)) updates[`drill/${k}`] = v;
+      for (const [group, entries] of Object.entries(dirty)) {
+        for (const [k, v] of Object.entries(entries)) updates[`${group}/${k}`] = v; // xplog 키("날짜/퀘스트ID")는 경로가 된다
+      }
       if (Object.keys(updates).length > 0) {
         await dbMod.update(dbMod.ref(db, base), updates);
         store.markSynced(dirty);

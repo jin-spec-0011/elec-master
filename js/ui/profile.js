@@ -1,6 +1,8 @@
 import { h, fill } from '../dom.js';
 import { pageTitle, sectionTitle, notice } from './common.js';
 import { APP_VERSION } from '../version.js';
+import { earnedTitles } from '../engine.js';
+import { summaryCard, progressSummary } from './progress-card.js';
 
 const STATUS_TEXT = {
   guest: '게스트(로컬) 모드',
@@ -143,6 +145,17 @@ export function render(container, app) {
     pageTitle('프로필'),
     !auth.configured ? notice('Firebase 설정이 비어 있어 로그인·동기화는 꺼져 있습니다. js/firebase-config.js 를 채우면 활성화됩니다.') : null,
     accountCard,
+    sectionTitle('학습 현황'),
+    summaryCard(app.store),
+    (() => {
+      const { streak } = progressSummary(store);
+      const titles = earnedTitles(data.quests, store.questStates());
+      return h('div', { class: 'card' },
+        h('dl', { class: 'kv' },
+          h('dt', null, '연속 학습일'), h('dd', null, `${streak.current}일 (최고 ${streak.best}일)`),
+          h('dt', null, '현재 칭호'), h('dd', null, titles.length ? titles[titles.length - 1].title : '아직 없음'),
+          h('dt', null, '획득 칭호'), h('dd', null, titles.length ? titles.map((t) => t.title).join(', ') : '-')));
+    })(),
     sectionTitle('데이터'),
     h(
       'div',

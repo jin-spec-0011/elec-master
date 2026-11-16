@@ -12,9 +12,13 @@ const SHELL_FILES = [
   'js/auth.js',
   'js/data.js',
   'js/dom.js',
+  'js/drills.js',
+  'js/expr.js',
   'js/firebase-config.js',
   'js/main.js',
+  'js/questions.js',
   'js/quests.js',
+  'js/rng.js',
   'js/router.js',
   'js/srs.js',
   'js/store.js',
@@ -22,12 +26,15 @@ const SHELL_FILES = [
   'js/tabs.js',
   'js/version.js',
   'js/ui/common.js',
+  'js/ui/drill.js',
   'js/ui/map.js',
   'js/ui/practice.js',
   'js/ui/profile.js',
   'js/ui/quests.js',
+  'js/ui/quiz.js',
   'js/ui/session.js',
   'js/ui/stats.js',
+  'js/ui/widgets.js',
   'icons/icon.svg',
   'icons/icon-192.png',
   'icons/icon-512.png',
@@ -35,7 +42,7 @@ const SHELL_FILES = [
   'icons/apple-touch-icon.png',
 ];
 
-const DATA_FILES = ['data/cards.json', 'data/quests/ch1.json', 'data/freqmap.json'];
+const DATA_FILES = ['data/cards.json', 'data/quests/ch1.json', 'data/freqmap.json', 'data/drills.json'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

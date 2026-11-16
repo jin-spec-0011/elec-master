@@ -73,6 +73,7 @@ test('데이터 로딩: 실제 JSON 통과, HTTP 오류·잘못된 JSON·형식 
   assert.equal(data.cardsAll.length, 100);
   assert.equal(data.cards.length, 100);
   assert.equal(data.quests.length, 16);
+  assert.ok(data.drills.length >= 40);
   const prod = await loadAll({ dev: false, fetchFn });
   assert.equal(prod.cards.length, prod.cardsAll.filter((c) => c.reviewed).length);
 
@@ -224,7 +225,7 @@ test('서비스워커: 프리캐시 목록이 실제 파일과 정확히 일치'
   const shellActual = ['index.html', 'manifest.json', ...walk('css'), ...walk('js'), ...walk('icons')].sort();
   assert.deepEqual(listOf('SHELL_FILES'), shellActual);
   const dataListed = listOf('DATA_FILES');
-  assert.deepEqual(dataListed, ['data/cards.json', 'data/freqmap.json', 'data/quests/ch1.json']);
+  assert.deepEqual(dataListed, ['data/cards.json', 'data/drills.json', 'data/freqmap.json', 'data/quests/ch1.json']);
   dataListed.forEach((f) => assert.ok(existsSync(join(ROOT, f)), `${f} 없음`));
 });
 

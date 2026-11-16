@@ -8,7 +8,7 @@ import { parseRoute } from '../../js/router.js';
 import { TABS } from '../../js/tabs.js';
 import { computeAvailability } from '../../js/quests.js';
 import { selectCards, resolveDevMode, loadAll, DataError, validateCardsDoc, fetchJson } from '../../js/data.js';
-import { isConfigValid, isDatabaseConfigured, authErrorMessage, createAuth } from '../../js/auth.js';
+import { isConfigValid, isDatabaseConfigured, authErrorMessage, createAuth, validateEmail, validateCredentials } from '../../js/auth.js';
 import { firebaseConfig } from '../../js/firebase-config.js';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
@@ -93,7 +93,8 @@ test('인증: 설정 검증과 오류 메시지', () => {
   assert.equal(isDatabaseConfigured({ databaseURL: 'https://elec-master-default-rtdb.asia-southeast1.firebasedatabase.app' }), true);
   assert.equal(isDatabaseConfigured({ databaseURL: 'https://elec-master-default-rtdb.firebaseio.com/' }), true);
   assert.equal(isDatabaseConfigured({ databaseURL: 'http://evil.example.com' }), false);
-  assert.match(authErrorMessage('auth/unauthorized-domain'), /승인된 도메인/);
+  assert.match(authErrorMessage('auth/invalid-credential'), /올바르지 않습니다/);
+  assert.match(authErrorMessage('auth/operation-not-allowed'), /이메일\/비밀번호/);
   assert.match(authErrorMessage('auth/unknown-x'), /auth\/unknown-x/);
 });
 
@@ -101,6 +102,8 @@ test('실제 firebase-config.js: 로그인 설정 유효, 프로젝트가 elec-m
   assert.equal(isConfigValid(firebaseConfig), true);
   assert.equal(firebaseConfig.projectId, 'elec-master');
   assert.equal(firebaseConfig.authDomain, 'elec-master.firebaseapp.com');
+  assert.equal(isDatabaseConfigured(firebaseConfig), true);
+  assert.match(firebaseConfig.databaseURL, /asia-southeast1/);
 });
 
 test('인증: 설정이 비면 게스트 모드이고 SDK를 불러오지 않는다', async () => {
@@ -112,10 +115,20 @@ test('인증: 설정이 비면 게스트 모드이고 SDK를 불러오지 않는
   assert.equal(imported, 0);
 });
 
-function fakeSdk({ popupError } = {}) {
+test('입력 검사: 이메일 형식과 빈 값', () => {
+  assert.equal(validateEmail(''), '이메일을 입력하세요.');
+  assert.match(validateEmail('abc'), /형식/);
+  assert.match(validateEmail('a@b'), /형식/);
+  assert.equal(validateEmail(' me@example.com '), '');
+  assert.equal(validateCredentials('me@example.com', ''), '비밀번호를 입력하세요.');
+  assert.equal(validateCredentials('me@example.com', 'pw'), '');
+});
+
+function fakeSdk({ signInError, resetError } = {}) {
   const calls = [];
   let listener = null;
   const authObj = {};
+  const fail = (code) => { const e = new Error(code); e.code = code; return e; };
   return {
     calls,
     emit: (user) => listener?.(user),
@@ -123,15 +136,13 @@ function fakeSdk({ popupError } = {}) {
     authMod: {
       getAuth: () => authObj,
       onAuthStateChanged: (_a, ok) => { listener = ok; },
-      getRedirectResult: async () => null,
-      GoogleAuthProvider: class { setCustomParameters() {} },
-      signInWithPopup: async () => { calls.push('popup'); if (popupError) { const e = new Error('x'); e.code = popupError; throw e; } },
-      signInWithRedirect: async () => { calls.push('redirect'); },
-      signOut: async () => { calls.push('signOut'); },
+      signInWithEmailAndPassword: async (_a, email, pw) => { calls.push(['signIn', email, pw]); if (signInError) throw fail(signInError); },
+      sendPasswordResetEmail: async (_a, email) => { calls.push(['reset', email]); if (resetError) throw fail(resetError); },
+      signOut: async () => { calls.push(['signOut']); },
     },
   };
 }
-const VALID = { apiKey: 'a', authDomain: 'b', databaseURL: 'c', projectId: 'd', appId: 'e' };
+const VALID = { apiKey: 'a', authDomain: 'b', projectId: 'd', appId: 'e' };
 const importerFor = (f) => async (url) => (url.endsWith('firebase-app.js') ? f.app : f.authMod);
 
 test('인증: 로그인 상태 전이와 로그아웃', async () => {
@@ -139,34 +150,62 @@ test('인증: 로그인 상태 전이와 로그아웃', async () => {
   const auth = createAuth({ config: VALID, importer: importerFor(f) });
   assert.equal(auth.state.status, 'loading');
   await auth.init();
-  f.emit({ uid: 'u1', displayName: '김', email: 'k@example.com' });
-  assert.deepEqual(auth.state.user, { uid: 'u1', name: '김', email: 'k@example.com' });
+  f.emit({ uid: 'u1', displayName: '', email: 'k@example.com' });
+  assert.deepEqual(auth.state.user, { uid: 'u1', name: '', email: 'k@example.com' });
   assert.equal(auth.state.status, 'signed-in');
   f.emit(null);
   assert.equal(auth.state.status, 'signed-out');
   await auth.signOut();
-  assert.ok(f.calls.includes('signOut'));
+  assert.deepEqual(f.calls.at(-1), ['signOut']);
 });
 
-test('인증: 팝업 차단 시 리디렉션으로 대체, 사용자가 닫으면 조용히 무시', async () => {
-  const blocked = fakeSdk({ popupError: 'auth/popup-blocked' });
-  const a1 = createAuth({ config: VALID, importer: importerFor(blocked) });
+test('인증: 이메일 로그인 성공 시 공백 제거한 이메일로 호출', async () => {
+  const f = fakeSdk();
+  const auth = createAuth({ config: VALID, importer: importerFor(f) });
+  await auth.init();
+  assert.equal(await auth.signIn('  me@example.com ', 'secret-pass'), true);
+  assert.deepEqual(f.calls[0], ['signIn', 'me@example.com', 'secret-pass']);
+});
+
+test('인증: 잘못된 입력은 SDK를 호출하지 않고, 서버 오류는 한국어 메시지로', async () => {
+  const f = fakeSdk({ signInError: 'auth/invalid-credential' });
+  const auth = createAuth({ config: VALID, importer: importerFor(f) });
+  await auth.init();
+  assert.equal(await auth.signIn('bad', 'x'), false);
+  assert.equal(f.calls.length, 0);
+  assert.match(auth.state.message, /형식/);
+  assert.equal(await auth.signIn('me@example.com', 'wrong'), false);
+  assert.equal(f.calls.length, 1);
+  assert.match(auth.state.message, /이메일 또는 비밀번호가 올바르지 않습니다/);
+});
+
+test('인증: 로그인 전에 SDK가 준비되지 않으면 안내', async () => {
+  const auth = createAuth({ config: VALID, importer: async () => { throw new Error('offline'); } });
+  await auth.init();
+  assert.equal(auth.state.status, 'unavailable');
+  assert.equal(await auth.signIn('me@example.com', 'pw'), false);
+  assert.match(auth.state.message, /사용할 수 없습니다/);
+});
+
+test('인증: 비밀번호 재설정은 계정 존재 여부를 노출하지 않는다', async () => {
+  const ok = fakeSdk();
+  const a1 = createAuth({ config: VALID, importer: importerFor(ok) });
   await a1.init();
-  await a1.signIn();
-  assert.deepEqual(blocked.calls, ['popup', 'redirect']);
+  assert.equal(await a1.resetPassword('me@example.com'), true);
+  const msg1 = a1.state.message;
 
-  const closed = fakeSdk({ popupError: 'auth/popup-closed-by-user' });
-  const a2 = createAuth({ config: VALID, importer: importerFor(closed) });
+  const missing = fakeSdk({ resetError: 'auth/user-not-found' });
+  const a2 = createAuth({ config: VALID, importer: importerFor(missing) });
   await a2.init();
-  await a2.signIn();
-  assert.deepEqual(closed.calls, ['popup']);
-  assert.equal(a2.state.message, '');
+  assert.equal(await a2.resetPassword('nobody@example.com'), true);
+  assert.equal(a2.state.message, msg1);
 
-  const domain = fakeSdk({ popupError: 'auth/unauthorized-domain' });
-  const a3 = createAuth({ config: VALID, importer: importerFor(domain) });
+  const limited = fakeSdk({ resetError: 'auth/too-many-requests' });
+  const a3 = createAuth({ config: VALID, importer: importerFor(limited) });
   await a3.init();
-  await a3.signIn();
-  assert.match(a3.state.message, /승인된 도메인/);
+  assert.equal(await a3.resetPassword('me@example.com'), false);
+  assert.match(a3.state.message, /너무 많아/);
+  assert.equal(await a3.resetPassword('not-an-email'), false);
 });
 
 test('인증: SDK 로딩 실패는 unavailable(게스트 계속)', async () => {

@@ -250,3 +250,20 @@ h3.section-title { margin: 20px 0 8px; font-size: 15px; color: var(--muted); fon
   .node { transition: transform 0.12s ease; }
   .node:active { transform: translateY(3px); }
 }
+
+/* 로그인 폼 */
+.label { display: block; margin: 12px 0 4px; font-size: 14px; font-weight: 700; color: var(--muted); }
+.field {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 16px; /* iOS 입력 시 확대 방지 */
+}
+.field:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+.field[disabled] { opacity: 0.6; }
+.form-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }

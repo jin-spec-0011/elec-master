@@ -11,6 +11,76 @@ const STATUS_TEXT = {
   error: '로그인 오류',
 };
 
+// 인증 상태 변경으로 화면이 다시 그려져도 입력한 이메일이 사라지지 않게 보관한다(비밀번호는 보관하지 않음).
+let draftEmail = '';
+
+function loginForm(auth) {
+  const canUse = auth.configured && (auth.state.status === 'signed-out' || auth.state.status === 'error');
+  const email = h('input', {
+    id: 'login-email',
+    class: 'field',
+    type: 'email',
+    name: 'email',
+    autocomplete: 'username',
+    inputmode: 'email',
+    autocapitalize: 'none',
+    autocorrect: 'off',
+    spellcheck: 'false',
+    required: true,
+    disabled: !canUse,
+    value: draftEmail,
+  });
+  const password = h('input', {
+    id: 'login-password',
+    class: 'field',
+    type: 'password',
+    name: 'password',
+    autocomplete: 'current-password',
+    required: true,
+    disabled: !canUse,
+  });
+  const submit = h('button', { class: 'btn', type: 'submit', disabled: !canUse }, '로그인');
+  const reset = h('button', { class: 'btn is-secondary', type: 'button', disabled: !canUse }, '비밀번호 재설정 메일');
+
+  email.addEventListener('input', () => {
+    draftEmail = email.value;
+  });
+
+  const busy = (on) => {
+    [email, password, submit, reset].forEach((el) => {
+      el.disabled = on || !canUse;
+    });
+  };
+
+  const form = h(
+    'form',
+    {
+      novalidate: true,
+      onsubmit: async (e) => {
+        e.preventDefault();
+        busy(true);
+        const ok = await auth.signIn(email.value, password.value);
+        if (!ok) {
+          busy(false);
+          password.value = '';
+        }
+      },
+    },
+    h('label', { class: 'label', for: 'login-email' }, '이메일'),
+    email,
+    h('label', { class: 'label', for: 'login-password' }, '비밀번호'),
+    password,
+    h('div', { class: 'form-actions' }, submit, reset),
+  );
+
+  reset.addEventListener('click', async () => {
+    busy(true);
+    await auth.resetPassword(email.value);
+    busy(false);
+  });
+  return form;
+}
+
 export function render(container, app) {
   const { auth, data } = app;
   const s = auth.state;
@@ -24,15 +94,17 @@ export function render(container, app) {
       'dl',
       { class: 'kv' },
       h('dt', null, '상태'), h('dd', null, STATUS_TEXT[s.status] ?? s.status),
-      s.user ? [h('dt', null, '이름'), h('dd', null, s.user.name || '-'), h('dt', null, '이메일'), h('dd', null, s.user.email || '-')] : null,
+      s.user ? [h('dt', null, '이메일'), h('dd', null, s.user.email || '-')] : null,
     ),
-    s.message ? h('p', { class: 'card-sub', style: 'margin-top:10px' }, s.message) : null,
+    s.message ? h('p', { class: 'card-sub', role: 'alert', style: 'margin-top:10px' }, s.message) : null,
     h(
       'div',
       { style: 'margin-top:12px' },
       s.status === 'signed-in'
         ? h('button', { class: 'btn is-secondary', type: 'button', onclick: () => auth.signOut() }, '로그아웃')
-        : h('button', { class: 'btn', type: 'button', disabled: !(auth.configured && (s.status === 'signed-out' || s.status === 'error')), onclick: () => auth.signIn() }, 'Google로 로그인'),
+        : auth.configured && s.status !== 'unavailable'
+          ? loginForm(auth)
+          : null,
     ),
   );
 
@@ -50,7 +122,8 @@ export function render(container, app) {
     }
   };
 
-  fill(container,
+  fill(
+    container,
     pageTitle('프로필'),
     !auth.configured ? notice('Firebase 설정이 비어 있어 로그인·동기화는 꺼져 있습니다. js/firebase-config.js 를 채우면 활성화됩니다.') : null,
     accountCard,

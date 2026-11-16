@@ -1,10 +1,10 @@
 import { TABS, DEFAULT_TAB } from './tabs.js';
 
 /** 하단 탭을 숨기는 전체 화면 학습 모드 */
-export const FULLSCREEN_ROUTES = ['session', 'quiz', 'drill'];
+export const FULLSCREEN_ROUTES = ['session', 'quiz', 'drill', 'boss'];
 
 /**
- * location.hash 해석. 탭 5개와 전체 화면 학습 모드(session·quiz·drill)를 지원한다.
+ * location.hash 해석. 탭 5개와 전체 화면 학습 모드(session·quiz·drill·boss)를 지원한다.
  * 알 수 없는 값은 기본 탭으로 되돌린다. 해시 라우팅이라 GitHub Pages에서 새로고침·딥링크가 404가 나지 않는다.
  * @param {string} hash 예) "#/quests", "#/session?subject=S1"
  * @returns {{ id: string, tab: string, params: Record<string, string> }} id는 화면, tab은 강조할 탭
@@ -12,7 +12,7 @@ export const FULLSCREEN_ROUTES = ['session', 'quiz', 'drill'];
 export function parseLocation(hash) {
   const m = String(hash ?? '').match(/^#\/?([a-z]+)(?:\?(.*))?$/);
   const id = m ? m[1] : '';
-  if (FULLSCREEN_ROUTES.includes(id)) return { id, tab: 'practice', params: Object.fromEntries(new URLSearchParams(m[2] ?? '')) };
+  if (FULLSCREEN_ROUTES.includes(id)) return { id, tab: id === 'boss' ? 'map' : 'practice', params: Object.fromEntries(new URLSearchParams(m[2] ?? '')) };
   const tab = TABS.some((t) => t.id === id) ? id : DEFAULT_TAB;
   return { id: tab, tab, params: {} };
 }

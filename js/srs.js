@@ -46,7 +46,7 @@ export function emptyReasons() {
 }
 
 export function newState() {
-  return { stage: 0, due: null, reps: 0, lapses: 0, graduated: false, last: 0, reasons: emptyReasons() };
+  return { stage: 0, due: null, reps: 0, lapses: 0, correct: 0, graduated: false, last: 0, reasons: emptyReasons() };
 }
 
 /**
@@ -61,7 +61,7 @@ export function newState() {
  */
 export function review(state, correct, todayKey, nowMs, reason) {
   const prev = state ?? newState();
-  const next = { ...prev, reasons: { ...emptyReasons(), ...prev.reasons }, reps: prev.reps + 1, last: nowMs };
+  const next = { ...prev, reasons: { ...emptyReasons(), ...prev.reasons }, reps: prev.reps + 1, correct: (prev.correct ?? 0) + (correct ? 1 : 0), last: nowMs };
   if (correct) {
     if (!state) {
       next.stage = 0;

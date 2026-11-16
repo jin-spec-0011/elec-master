@@ -18,7 +18,7 @@ test('저장소: 복습 기록·일별 집계·영속화', () => {
   store.recordReview('M02', false, 'concept');
   store.recordReview('M01', true); // 두 번째 복습은 새 카드가 아님
   const d = store.daily(DAY);
-  assert.deepEqual(d, { reviewed: 3, newCards: 2, correct: 2, drillCorrect: 0, drillTotal: 0 });
+  assert.deepEqual(d, { reviewed: 3, newCards: 2, correct: 2, drillCorrect: 0, drillTotal: 0, bossAttempts: 0 });
   assert.equal(store.cardStates().M02.reasons.concept, 1);
   const again = createStore({ storage, now: () => T0 });
   assert.equal(again.cardStates().M01.reps, 2);
@@ -58,8 +58,8 @@ test('서버 데이터 검증: 잘못된 값은 버리고 범위는 보정', () 
   assert.deepEqual(s.reasons, { concept: 3, formula: 0, calc: 0, misread: 0 });
   assert.equal(sanitizeCardState({ stage: 4, graduated: true }).due, null);
   assert.deepEqual(
-    mergeDaily({ reviewed: 3, newCards: 1, correct: 2, drillCorrect: 4, drillTotal: 5 }, { reviewed: 2, newCards: 2, correct: 2, drillCorrect: 1, drillTotal: 9 }),
-    { reviewed: 3, newCards: 2, correct: 2, drillCorrect: 4, drillTotal: 9 },
+    mergeDaily({ reviewed: 3, newCards: 1, correct: 2, drillCorrect: 4, drillTotal: 5, bossAttempts: 0 }, { reviewed: 2, newCards: 2, correct: 2, drillCorrect: 1, drillTotal: 9, bossAttempts: 2 }),
+    { reviewed: 3, newCards: 2, correct: 2, drillCorrect: 4, drillTotal: 9, bossAttempts: 2 },
   );
 });
 
@@ -68,7 +68,7 @@ test('병합: 최신 우선, 서버에 없는 로컬은 올리기, 다른 계정
   local.cards.M01 = review(null, true, DAY, 2000); // 로컬이 최신
   local.cards.M02 = review(null, true, DAY, 1000); // 서버가 최신
   local.cards.M03 = review(null, true, DAY, 1000); // 서버에 없음
-  local.daily[DAY] = { reviewed: 5, newCards: 3, correct: 4, drillCorrect: 0, drillTotal: 0 };
+  local.daily[DAY] = { reviewed: 5, newCards: 3, correct: 4, drillCorrect: 0, drillTotal: 0, bossAttempts: 0 };
   const remote = {
     cards: { M01: review(null, false, DAY, 1000), M02: review(null, true, DAY, 3000), BAD: { stage: 'x' } },
     daily: { [DAY]: { reviewed: 2, newCards: 5, correct: 1 }, '2026-xx': { reviewed: 1 } },
@@ -80,7 +80,7 @@ test('병합: 최신 우선, 서버에 없는 로컬은 올리기, 다른 계정
   assert.ok(out.cards.M03);
   assert.equal(out.cards.BAD, undefined);
   assert.deepEqual(out.dirty.cards, { M01: true, M03: true });
-  assert.deepEqual(out.daily[DAY], { reviewed: 5, newCards: 5, correct: 4, drillCorrect: 0, drillTotal: 0 });
+  assert.deepEqual(out.daily[DAY], { reviewed: 5, newCards: 5, correct: 4, drillCorrect: 0, drillTotal: 0, bossAttempts: 0 });
   assert.deepEqual(out.dirty.daily, { [DAY]: true });
   assert.equal(out.daily['2026-xx'], undefined);
 
@@ -117,7 +117,7 @@ test('동기화: 서버 병합 후 변경분만 업로드하고 dirty 해제', a
   assert.deepEqual(db.log.map((l) => l[0]), ['get', 'update']);
   assert.deepEqual(db.log[1][2], [`cards/M01`, `daily/${DAY}`]);
   assert.ok(store.cardStates().M05); // 서버 → 로컬
-  assert.deepEqual(store.dirtySnapshot(), { cards: {}, daily: {}, drill: {} });
+  assert.deepEqual(store.dirtySnapshot(), { cards: {}, daily: {}, drill: {}, quests: {}, xplog: {}, boss: {} });
   assert.equal(store.owner, 'u1');
   await sync.syncNow(); // 변경 없으면 업로드 없음
   assert.deepEqual(db.log.slice(2).map((l) => l[0]), ['get']);

@@ -208,7 +208,7 @@ test('저장소: 계산 드릴 기록·이유 집계·일별 집계', () => {
   store.tagDrillReason('S3', null, 'calc');
   store.tagDrillReason('S3', 'calc', 'misread');
   assert.deepEqual(store.drillStats().S3, { correct: 1, total: 2, reasons: { concept: 0, formula: 0, calc: 0, misread: 1 } });
-  assert.deepEqual(store.daily('20261116'), { reviewed: 0, newCards: 0, correct: 0, drillCorrect: 1, drillTotal: 2 });
+  assert.deepEqual(store.daily('20261116'), { reviewed: 0, newCards: 0, correct: 0, drillCorrect: 1, drillTotal: 2, bossAttempts: 0 });
   assert.throws(() => store.recordDrill('X9', true), RangeError);
   assert.deepEqual(Object.keys(store.dirtySnapshot().drill), ['S3']);
   const again = createStore({ storage, now: () => T0 });
@@ -218,7 +218,8 @@ test('저장소: 계산 드릴 기록·이유 집계·일별 집계', () => {
   assert.equal(store.daily('20261116').drillTotal, 2);
 });
 
-test('라우터: quiz·drill도 전체 화면(연습 탭 강조)', () => {
+test('라우터: quiz·drill·boss도 전체 화면', () => {
+  assert.deepEqual(parseLocation('#/boss'), { id: 'boss', tab: 'map', params: {} });
   assert.deepEqual(parseLocation('#/quiz?subject=S2'), { id: 'quiz', tab: 'practice', params: { subject: 'S2' } });
   assert.deepEqual(parseLocation('#/drill'), { id: 'drill', tab: 'practice', params: {} });
 });

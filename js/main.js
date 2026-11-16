@@ -6,6 +6,8 @@ import { loadAll, resolveDevMode } from './data.js';
 import { createAuth } from './auth.js';
 import { createStore } from './store.js';
 import { createSync } from './sync.js';
+import { createQuestRunner } from './runner.js';
+import { showToast } from './ui/toast.js';
 import { firebaseConfig } from './firebase-config.js';
 import { errorCard } from './ui/common.js';
 
@@ -18,12 +20,14 @@ const VIEWS = {
   session: () => import('./ui/session.js'),
   quiz: () => import('./ui/quiz.js'),
   drill: () => import('./ui/drill.js'),
+  boss: () => import('./ui/boss.js'),
 };
 
 const auth = createAuth();
 const store = createStore();
 const sync = createSync({ store, auth, config: firebaseConfig });
-const app = { data: null, auth, store, sync, swReg: null, route: { id: 'map', tab: 'map', params: {} } };
+const app = { data: null, auth, store, sync, runner: null, rerender: () => {}, swReg: null, route: { id: 'map', tab: 'map', params: {} } };
+app.runner = createQuestRunner({ store, getData: () => app.data });
 
 function safeStorage() {
   try {
@@ -105,10 +109,22 @@ async function boot() {
       app.data = await loadAll({ dev });
       updateChip(chip);
       renderRoute(app.route);
+      app.runner.check(); // 이미 달성한 퀘스트가 있으면 반영
     } catch (e) {
       clear(view).append(errorCard(e.message, loadData));
     }
   }
+
+  app.rerender = () => renderRoute(app.route);
+  // 퀘스트 완료·XP·레벨업 알림. 학습 화면(세션·퀴즈·드릴·보스) 중에는 화면을 다시 그리지 않는다.
+  app.runner.subscribe((events) => {
+    for (const e of events) {
+      if (e.kind === 'quest') showToast(`퀘스트 완료! ${e.quest.title} +${e.xp} XP${e.quest.reward ? ` · ${e.quest.reward.replace(/^칭호:\s*/, '칭호 획득: ')}` : ''}`, { kind: 'good' });
+      else if (e.kind === 'daily') showToast(`일일 퀘스트 달성! ${e.quest.title} +${e.xp} XP`, { kind: 'good' });
+      else if (e.kind === 'summary' && e.levelUp) showToast(`레벨 업! Lv.${e.level}`, { kind: 'level', ms: 6000 });
+    }
+    if (['map', 'quests', 'profile'].includes(app.route.id)) renderRoute(app.route);
+  });
 
   auth.subscribe(() => {
     updateChip(chip);

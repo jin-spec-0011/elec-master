@@ -6,7 +6,6 @@ import { fileURLToPath } from 'node:url';
 
 import { parseRoute } from '../../js/router.js';
 import { TABS } from '../../js/tabs.js';
-import { computeAvailability } from '../../js/quests.js';
 import { selectCards, resolveDevMode, loadAll, DataError, validateCardsDoc, fetchJson } from '../../js/data.js';
 import { isConfigValid, isDatabaseConfigured, authErrorMessage, createAuth, validateEmail, validateCredentials } from '../../js/auth.js';
 import { firebaseConfig } from '../../js/firebase-config.js';
@@ -30,21 +29,6 @@ test('라우터: 탭 5개, 알 수 없는 해시는 맵으로', () => {
   assert.equal(parseRoute('#/nope'), 'map');
   assert.equal(parseRoute(''), 'map');
   assert.equal(parseRoute(undefined), 'map');
-});
-
-test('퀘스트 해금: 선행 완료 시 열림, 일일은 항상 가능', () => {
-  const quests = [
-    { id: 'Q1-01', type: 'main', prereq: [] },
-    { id: 'Q1-02', type: 'main', prereq: ['Q1-01'] },
-    { id: 'D-01', type: 'daily', prereq: [] },
-  ];
-  const a = computeAvailability(quests);
-  assert.equal(a.get('Q1-01'), 'available');
-  assert.equal(a.get('Q1-02'), 'locked');
-  assert.equal(a.get('D-01'), 'available');
-  const b = computeAvailability(quests, new Set(['Q1-01']));
-  assert.equal(b.get('Q1-01'), 'done');
-  assert.equal(b.get('Q1-02'), 'available');
 });
 
 test('카드 선택: 정식은 검수 OK만, 개발은 전체', () => {

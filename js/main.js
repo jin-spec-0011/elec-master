@@ -26,7 +26,7 @@ const VIEWS = {
 const auth = createAuth();
 const store = createStore();
 const sync = createSync({ store, auth, config: firebaseConfig });
-const app = { data: null, auth, store, sync, runner: null, rerender: () => {}, swReg: null, route: { id: 'map', tab: 'map', params: {} } };
+const app = { data: null, auth, store, sync, runner: null, focusedRoute: null, rerender: () => {}, swReg: null, route: { id: 'map', tab: 'map', params: {} } };
 app.runner = createQuestRunner({ store, getData: () => app.data });
 
 function safeStorage() {
@@ -97,6 +97,10 @@ async function boot() {
       if (app.route !== loc) return; // 비동기 로딩 중 다른 화면으로 이동한 경우
       mod.render(view, app, loc.params);
       view.scrollTo?.(0, 0);
+      if (app.focusedRoute !== loc.id) {
+        app.focusedRoute = loc.id;
+        view.focus({ preventScroll: true }); // 화면이 바뀌면 스크린 리더가 새 내용을 읽도록 본문으로 포커스 이동
+      }
     } catch (e) {
       console.error(e);
       clear(view).append(errorCard(`화면을 그리지 못했습니다: ${e.message}`, () => renderRoute(loc)));

@@ -8,6 +8,7 @@
   --primary: #2563eb;
   --primary-ink: #ffffff;
   --primary-soft: #e3ecff;
+  --primary-mid: #8fb0f7;
   --accent: #f59e0b;
   --accent-soft: #fff3d6;
   --ok: #047857;
@@ -30,6 +31,7 @@
     --primary: #6b9bff;
     --primary-ink: #0b1220;
     --primary-soft: #1a2a4d;
+    --primary-mid: #3b5ca3;
     --accent-soft: #3a2d0b;
     --ok: #34d399;
     --bad: #f87171;
@@ -382,3 +384,64 @@ body.in-session .view { padding-bottom: calc(24px + var(--safe-b)); }
 @media (prefers-color-scheme: dark) { .toast.is-good { background: #065f46; } }
 @media (prefers-reduced-motion: no-preference) { .toast { animation: toast-in 0.25s ease-out; } }
 @keyframes toast-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+
+/* ---- P4-5: 통계 차트 (단일 색, 얇은 막대, 막대마다 툴팁) ---- */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.chart { margin: 0; }
+.chart-title { margin: 0 0 12px; font-size: 14px; font-weight: 700; color: var(--text); }
+.chart-note { margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+
+.col-chart { position: relative; height: 168px; margin: 6px 0 26px 30px; }
+.col-grid { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; }
+.col-line { position: relative; height: 0; border-top: 1px solid var(--line); }
+.col-tick { position: absolute; left: -30px; top: -9px; width: 24px; text-align: right; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.col-bars { position: absolute; inset: 0; display: flex; align-items: flex-end; }
+.col-slot { position: relative; flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+.col-stack { position: relative; width: min(24px, 60%); flex: none; }
+.col-bar { position: relative; display: block; width: 100%; height: 100%; padding: 0; border: 0; background: var(--primary-mid); border-radius: 4px 4px 0 0; cursor: pointer; }
+.col-bar.is-now { background: var(--primary); }
+.col-value { position: absolute; left: 50%; bottom: calc(100% + 3px); transform: translateX(-50%); font-size: 12px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+.col-label { position: absolute; top: calc(100% + 6px); font-size: 12px; color: var(--muted); }
+.col-label.is-now { color: var(--text); font-weight: 700; }
+.col-bar:focus-visible, .hbar-value:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.hbars { display: flex; flex-direction: column; gap: 12px; }
+.hbar-row { display: grid; grid-template-columns: 112px 1fr 52px; align-items: center; gap: 10px; }
+.hbar-label { font-size: 14px; color: var(--text); line-height: 1.25; }
+.hbar-track { position: relative; height: 14px; border-radius: 4px; background: var(--primary-soft); }
+.hbar-fill { position: relative; display: block; height: 100%; background: var(--primary); border-radius: 0 4px 4px 0; }
+.hbar-value { position: relative; padding: 0; border: 0; background: none; font: inherit; font-size: 14px; font-weight: 700; color: var(--text); text-align: right; font-variant-numeric: tabular-nums; cursor: pointer; }
+
+/* 툴팁: 호버·포커스·탭(포커스)에서 표시 */
+.col-bar::after, .hbar-fill::after, .hbar-value::after {
+  content: attr(data-tip); display: none; position: absolute; z-index: 40; width: max-content; max-width: 220px;
+  padding: 8px 10px; border-radius: 10px; background: var(--text); color: var(--bg);
+  font-size: 12px; font-weight: 600; line-height: 1.4; text-align: left; white-space: normal; pointer-events: none;
+}
+.col-bar::after { bottom: calc(100% + 24px); left: 50%; transform: translateX(-50%); }
+.col-bar.tip-start::after { left: 0; transform: none; }
+.col-bar.tip-end::after { left: auto; right: 0; transform: none; }
+.hbar-fill::after { bottom: calc(100% + 6px); left: 0; }
+.hbar-value::after { bottom: calc(100% + 6px); right: 0; }
+.col-bar:hover::after, .col-bar:focus::after, .hbar-fill:hover::after, .hbar-value:hover::after, .hbar-value:focus::after { display: block; }
+
+.chart-table { margin-top: 12px; font-size: 13px; }
+.chart-table summary { cursor: pointer; color: var(--primary); font-weight: 700; min-height: 32px; display: flex; align-items: center; }
+.chart-table table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+.chart-table th, .chart-table td { padding: 6px 4px; border-bottom: 1px solid var(--line); text-align: left; font-weight: 500; }
+.chart-table td { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---- P4-5: 맵 연결선, 전환 효과 ---- */
+.map-path { position: relative; }
+.map-lines { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 0; overflow: visible; }
+.map-lines path { fill: none; stroke: var(--line); stroke-width: 6; stroke-linecap: round; }
+.map-lines path.is-done { stroke: var(--ok); opacity: 0.55; }
+.node-wrap { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .sheet { animation: sheet-up 0.22s ease-out; }
+  @keyframes sheet-up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .view > * { animation: fade-in 0.18s ease-out; }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+  .opt, .reason, .key { transition: background-color 0.12s, border-color 0.12s, box-shadow 0.12s; }
+}

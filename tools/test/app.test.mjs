@@ -8,7 +8,8 @@ import { parseRoute } from '../../js/router.js';
 import { TABS } from '../../js/tabs.js';
 import { computeAvailability } from '../../js/quests.js';
 import { selectCards, resolveDevMode, loadAll, DataError, validateCardsDoc, fetchJson } from '../../js/data.js';
-import { isConfigValid, authErrorMessage, createAuth } from '../../js/auth.js';
+import { isConfigValid, isDatabaseConfigured, authErrorMessage, createAuth } from '../../js/auth.js';
+import { firebaseConfig } from '../../js/firebase-config.js';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const read = (p) => readFileSync(join(ROOT, p), 'utf8');
@@ -86,8 +87,20 @@ test('인증: 설정 검증과 오류 메시지', () => {
   assert.equal(isConfigValid({ apiKey: '', authDomain: '', databaseURL: '', projectId: '', appId: '' }), false);
   assert.equal(isConfigValid({ apiKey: 'a', authDomain: 'b', databaseURL: 'c', projectId: 'd', appId: 'YOUR_APP_ID' }), false);
   assert.equal(isConfigValid({ apiKey: 'a', authDomain: 'b', databaseURL: 'c', projectId: 'd', appId: 'e' }), true);
+  assert.equal(isConfigValid({ apiKey: 'a', authDomain: 'b', projectId: 'd', appId: 'e' }), true); // databaseURL 없이도 로그인 가능
+  assert.equal(isConfigValid({ apiKey: 'a', authDomain: 'b', projectId: 'd' }), false);
+  assert.equal(isDatabaseConfigured({ databaseURL: '' }), false);
+  assert.equal(isDatabaseConfigured({ databaseURL: 'https://elec-master-default-rtdb.asia-southeast1.firebasedatabase.app' }), true);
+  assert.equal(isDatabaseConfigured({ databaseURL: 'https://elec-master-default-rtdb.firebaseio.com/' }), true);
+  assert.equal(isDatabaseConfigured({ databaseURL: 'http://evil.example.com' }), false);
   assert.match(authErrorMessage('auth/unauthorized-domain'), /승인된 도메인/);
   assert.match(authErrorMessage('auth/unknown-x'), /auth\/unknown-x/);
+});
+
+test('실제 firebase-config.js: 로그인 설정 유효, 프로젝트가 elec-master', () => {
+  assert.equal(isConfigValid(firebaseConfig), true);
+  assert.equal(firebaseConfig.projectId, 'elec-master');
+  assert.equal(firebaseConfig.authDomain, 'elec-master.firebaseapp.com');
 });
 
 test('인증: 설정이 비면 게스트 모드이고 SDK를 불러오지 않는다', async () => {

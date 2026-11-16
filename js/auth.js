@@ -4,7 +4,8 @@ import { firebaseConfig } from './firebase-config.js';
 
 export const FIREBASE_SDK_VERSION = '10.12.2';
 const CDN = `https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}`;
-const REQUIRED_KEYS = ['apiKey', 'authDomain', 'databaseURL', 'projectId', 'appId'];
+// 로그인에는 databaseURL이 필요 없다. Realtime Database 연동(P4-2)부터 isDatabaseConfigured로 따로 확인한다.
+const REQUIRED_KEYS = ['apiKey', 'authDomain', 'projectId', 'appId'];
 
 /** 필수 키가 모두 채워진 문자열인지(자리표시 값 제외) 확인한다. */
 export function isConfigValid(cfg) {
@@ -13,6 +14,11 @@ export function isConfigValid(cfg) {
     typeof cfg === 'object' &&
     REQUIRED_KEYS.every((k) => typeof cfg[k] === 'string' && cfg[k].trim() !== '' && !/^(YOUR_|<|TODO)/i.test(cfg[k].trim()))
   );
+}
+
+/** Realtime Database 주소가 채워져 있는지 확인한다. */
+export function isDatabaseConfigured(cfg) {
+  return typeof cfg?.databaseURL === 'string' && /^https:\/\/.+\.(firebaseio\.com|firebasedatabase\.app)\/?$/.test(cfg.databaseURL.trim());
 }
 
 const MESSAGES = {

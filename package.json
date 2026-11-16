@@ -1,0 +1,18 @@
+{
+  "name": "elec-master",
+  "version": "0.1.0",
+  "private": true,
+  "description": "전기기사 퀘스트 학습 PWA (P1: 데이터 준비 도구)",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "convert:cards": "node tools/csv-to-cards.mjs",
+    "convert:quests": "node tools/csv-to-quests.mjs",
+    "validate": "node tools/validate-data.mjs",
+    "validate:strict": "node tools/validate-data.mjs --strict",
+    "guard": "bash tools/guard.sh",
+    "test": "node --test tools/test/*.test.mjs"
+  }
+}

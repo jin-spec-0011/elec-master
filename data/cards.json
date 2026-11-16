@@ -1,0 +1,1627 @@
+{
+  "version": 1,
+  "source": "data/src/cards.csv",
+  "count": 100,
+  "reviewed": 0,
+  "cards": [
+    {
+      "id": "M01",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "사인(sin θ)의 정의",
+      "back": "sin θ = 대변 / 빗변",
+      "unit": null,
+      "note": "직각삼각형 기준",
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "M-삼각-sin",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M02",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "코사인(cos θ)의 정의",
+      "back": "cos θ = 밑변 / 빗변",
+      "unit": null,
+      "note": "직각삼각형 기준",
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "M-삼각-cos",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M03",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "탄젠트(tan θ)의 정의",
+      "back": "tan θ = sin θ / cos θ = 대변 / 밑변",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "M-삼각-tan",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M04",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "삼각함수 기본 항등식",
+      "back": "sin²θ + cos²θ = 1",
+      "unit": null,
+      "note": null,
+      "types": [
+        "blank"
+      ],
+      "concept": "M-삼각-항등식",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M05",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "sin 30° 값",
+      "back": "sin 30° = 1/2",
+      "unit": null,
+      "note": "cos 60°와 같은 값",
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "M-삼각-특수각",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M06",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "sin 60° 값",
+      "back": "sin 60° = √3/2 ≈ 0.866",
+      "unit": null,
+      "note": "cos 30°와 같은 값",
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "M-삼각-특수각",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M07",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "sin 45°, cos 45° 값",
+      "back": "sin 45° = cos 45° = 1/√2 ≈ 0.707",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "M-삼각-특수각",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M08",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "각도↔라디안 환산",
+      "back": "π [rad] = 180°",
+      "unit": "[rad]",
+      "note": "1 rad ≈ 57.3°",
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "M-호도법",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M09",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "각주파수 ω",
+      "back": "ω = 2πf",
+      "unit": "[rad/s]",
+      "note": "f: 주파수 [Hz]",
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "M-각주파수",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M10",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "허수단위 j",
+      "back": "j² = −1",
+      "unit": null,
+      "note": "전기에서는 전류 i와 구분하려고 j 사용",
+      "types": [
+        "choice"
+      ],
+      "concept": "M-복소수-허수",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M11",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "복소수 A = a + jb의 크기",
+      "back": "|A| = √(a² + b²)",
+      "unit": null,
+      "note": null,
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "M-복소수-크기",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M12",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "복소수 A = a + jb의 편각",
+      "back": "θ = tan⁻¹(b / a)",
+      "unit": null,
+      "note": "a < 0이면 사분면 보정 필요",
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "M-복소수-편각",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M13",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "극형식 표현",
+      "back": "A = |A|∠θ = |A|(cos θ + j sin θ)",
+      "unit": null,
+      "note": null,
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "M-복소수-극형식",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M14",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "극형식 곱셈 규칙",
+      "back": "크기는 곱하고 각은 더함: A₁A₂ = |A₁||A₂|∠(θ₁ + θ₂)",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "M-복소수-극형식",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M15",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "극형식 나눗셈 규칙",
+      "back": "크기는 나누고 각은 빼: A₁/A₂ = (|A₁|/|A₂|)∠(θ₁ − θ₂)",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "M-복소수-극형식",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M16",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "켤레복소수",
+      "back": "a + jb의 켤레 = a − jb",
+      "unit": null,
+      "note": "기호 Ā 또는 A*",
+      "types": [
+        "choice"
+      ],
+      "concept": "M-복소수-켤레",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M17",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "오일러 공식",
+      "back": "e^(jθ) = cos θ + j sin θ",
+      "unit": null,
+      "note": null,
+      "types": [
+        "blank"
+      ],
+      "concept": "M-오일러",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M18",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "sin ωt의 미분",
+      "back": "d/dt (sin ωt) = ω cos ωt",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "M-미분-삼각",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M19",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "sin ωt의 적분",
+      "back": "∫ sin ωt dt = −(1/ω) cos ωt + C",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "M-적분-삼각",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "M20",
+      "subject": "M",
+      "subjectName": "기초수학",
+      "front": "지수함수의 미분",
+      "back": "d/dt (e^(at)) = a·e^(at)",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "M-미분-지수",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-01",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "쿨롱의 법칙 (두 점전하 사이 힘)",
+      "back": "F = Q₁Q₂ / (4πε₀r²)",
+      "unit": "[N]",
+      "note": "거리 제곱에 반비례",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S1-쿨롱",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-02",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "쿨롱 상수 1/(4πε₀)",
+      "back": "1/(4πε₀) ≈ 9 × 10⁹",
+      "unit": "[N·m²/C²]",
+      "note": null,
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "S1-쿨롱상수",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-03",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "진공의 유전율 ε₀",
+      "back": "ε₀ ≈ 8.855 × 10⁻¹²",
+      "unit": "[F/m]",
+      "note": null,
+      "types": [
+        "choice",
+        "match"
+      ],
+      "concept": "S1-유전율",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-04",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "진공의 투자율 μ₀",
+      "back": "μ₀ = 4π × 10⁻⁷",
+      "unit": "[H/m]",
+      "note": null,
+      "types": [
+        "choice",
+        "match"
+      ],
+      "concept": "S1-투자율",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-05",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "점전하의 전계 세기",
+      "back": "E = Q / (4πε₀r²)",
+      "unit": "[V/m]",
+      "note": null,
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S1-전계-점전하",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-06",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "점전하의 전위",
+      "back": "V = Q / (4πε₀r)",
+      "unit": "[V]",
+      "note": "전계는 r², 전위는 r에 반비례",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S1-전위-점전하",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-07",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "가우스 법칙",
+      "back": "∮E·dS = Q / ε₀",
+      "unit": null,
+      "note": "폐곡면을 지나는 전기력선 수 = Q/ε₀",
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "S1-가우스",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-08",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "평행판 콘덴서 정전용량",
+      "back": "C = εS / d",
+      "unit": "[F]",
+      "note": "S: 판 면적, d: 간격",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S1-정전용량-평행판",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-09",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "콘덴서에 저장되는 에너지",
+      "back": "W = ½CV² = QV/2 = Q²/(2C)",
+      "unit": "[J]",
+      "note": null,
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S1-정전에너지",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-10",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "무한장 직선 전류의 자계",
+      "back": "H = I / (2πr)",
+      "unit": "[A/m]",
+      "note": null,
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S1-자계-직선",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-11",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "원형 코일 중심의 자계",
+      "back": "H = NI / (2a)",
+      "unit": "[A/m]",
+      "note": "a: 코일 반지름",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S1-자계-원형코일",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-12",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "무한장 솔레노이드 내부 자계",
+      "back": "H = n₀I",
+      "unit": "[A/m]",
+      "note": "n₀: 단위 길이당 권수, 외부 자계는 0",
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "S1-자계-솔레노이드",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-13",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "자속밀도",
+      "back": "B = μH = μ₀μsH",
+      "unit": "[Wb/m²] = [T]",
+      "note": "μs: 비투자율",
+      "types": [
+        "choice",
+        "match"
+      ],
+      "concept": "S1-자속밀도",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-14",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "비오-사바르 법칙",
+      "back": "dH = I·dl·sin θ / (4πr²)",
+      "unit": "[A/m]",
+      "note": null,
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "S1-비오사바르",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-15",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "앙페르 주회적분 법칙",
+      "back": "∮H·dl = I (코일이면 NI)",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "S1-앙페르",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-16",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "자계 속 도체가 받는 힘 (플레밍 왼손)",
+      "back": "F = BIl sin θ",
+      "unit": "[N]",
+      "note": "왼손: 전동기, 오른손: 발전기",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S1-전자력",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-17",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "패러데이 전자유도 법칙",
+      "back": "e = −N dΦ/dt",
+      "unit": "[V]",
+      "note": "− 부호는 렌츠의 법칙 (변화를 방해하는 방향)",
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "S1-패러데이",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-18",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "인덕턴스에 저장되는 에너지",
+      "back": "W = ½LI²",
+      "unit": "[J]",
+      "note": null,
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S1-자기에너지",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-19",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "상호인덕턴스와 결합계수",
+      "back": "M = k√(L₁L₂)",
+      "unit": "[H]",
+      "note": "0 ≤ k ≤ 1",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S1-상호인덕턴스",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S1-20",
+      "subject": "S1",
+      "subjectName": "전기자기학",
+      "front": "평행 도선 사이의 힘 (단위 길이당)",
+      "back": "F = μ₀I₁I₂ / (2πr) = 2I₁I₂/r × 10⁻⁷",
+      "unit": "[N/m]",
+      "note": "같은 방향 전류: 흡인력, 반대 방향: 반발력",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S1-평행도선힘",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-01",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "단상 유효전력",
+      "back": "P = VI cos θ",
+      "unit": "[W]",
+      "note": null,
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S2-단상전력",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-02",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "3상 유효전력",
+      "back": "P = √3·V·I·cos θ",
+      "unit": "[W]",
+      "note": "V, I는 선간전압·선전류",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S2-3상전력",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-03",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "피상전력",
+      "back": "S = √(P² + Q²)",
+      "unit": "[VA]",
+      "note": null,
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S2-피상전력",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-04",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "역률",
+      "back": "cos θ = P / S",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S2-역률",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-05",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "3상 선로 전압강하",
+      "back": "e = √3·I(R cos θ + X sin θ)",
+      "unit": "[V]",
+      "note": null,
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "S2-전압강하",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-06",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "전압강하율",
+      "back": "ε = (Vs − Vr) / Vr × 100",
+      "unit": "[%]",
+      "note": "Vs: 송전단 전압, Vr: 수전단 전압",
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "S2-전압강하율",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-07",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "전압변동률",
+      "back": "δ = (V₀ − Vr) / Vr × 100",
+      "unit": "[%]",
+      "note": "V₀: 무부하 수전단 전압 (강하율과 혼동 주의)",
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "S2-전압변동률",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-08",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "3상 선로 전력손실",
+      "back": "Pℓ = 3I²R",
+      "unit": "[W]",
+      "note": "R: 전선 1가닥의 저항",
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "S2-선로손실",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-09",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "전력손실과 송전전압의 관계",
+      "back": "Pℓ ∝ 1/V²",
+      "unit": null,
+      "note": "같은 전력이면 전압 2배 → 손실 1/4",
+      "types": [
+        "choice"
+      ],
+      "concept": "S2-손실-전압관계",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-10",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "역률 개선용 콘덴서 용량",
+      "back": "Qc = P(tan θ₁ − tan θ₂)",
+      "unit": "[kVA]",
+      "note": "θ₁: 개선 전, θ₂: 개선 후",
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "S2-역률개선",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-11",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "전선의 이도(처짐)",
+      "back": "D = WS² / (8T)",
+      "unit": "[m]",
+      "note": "W: 단위 길이당 무게, S: 경간, T: 수평장력",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S2-이도",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-12",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "전선의 실제 길이",
+      "back": "L = S + 8D² / (3S)",
+      "unit": "[m]",
+      "note": null,
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "S2-전선길이",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-13",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "수력발전 이론 출력",
+      "back": "P = 9.8QH",
+      "unit": "[kW]",
+      "note": "Q: 유량 [m³/s], H: 유효낙차 [m], 실제 출력은 × 효율 η",
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "S2-수력출력",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-14",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "화력발전 열효율",
+      "back": "η = 860W / (BH) × 100",
+      "unit": "[%]",
+      "note": "W: 발전량 [kWh], B: 연료량 [kg], H: 발열량 [kcal/kg]",
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "S2-열효율",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S2-15",
+      "subject": "S2",
+      "subjectName": "전력공학",
+      "front": "%임피던스로 구하는 단락전류",
+      "back": "Is = (100 / %Z) × In",
+      "unit": "[A]",
+      "note": "In: 정격전류",
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "S2-단락전류",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-01",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "동기속도",
+      "back": "Ns = 120f / P",
+      "unit": "[rpm]",
+      "note": "P: 극수",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S3-동기속도",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-02",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "유도전동기 슬립",
+      "back": "s = (Ns − N) / Ns",
+      "unit": null,
+      "note": "정지 시 s = 1",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S3-슬립",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-03",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "유도전동기 회전속도",
+      "back": "N = (1 − s)Ns",
+      "unit": "[rpm]",
+      "note": null,
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "S3-회전속도",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-04",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "유도전동기 2차 동손",
+      "back": "Pc2 = sP2",
+      "unit": "[W]",
+      "note": "P2: 2차 입력",
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "S3-2차동손",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-05",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "유도전동기 기계적 출력",
+      "back": "Po = (1 − s)P2",
+      "unit": "[W]",
+      "note": "P2 : Pc2 : Po = 1 : s : (1 − s)",
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "S3-기계적출력",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-06",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "변압기 권수비",
+      "back": "a = N₁/N₂ = V₁/V₂ = I₂/I₁",
+      "unit": null,
+      "note": "전류는 권수에 반비례",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S3-권수비",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-07",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "변압기 유기기전력",
+      "back": "E = 4.44fNΦm",
+      "unit": "[V]",
+      "note": "Φm: 최대 자속",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S3-변압기기전력",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-08",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "변압기 최대효율 조건",
+      "back": "철손 = 동손 (Pi = Pc)",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice"
+      ],
+      "concept": "S3-최대효율",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-09",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "직류기 유기기전력",
+      "back": "E = pZΦN / (60a)",
+      "unit": "[V]",
+      "note": "p: 극수, Z: 도체 수, a: 병렬회로 수, N: [rpm]",
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "S3-직류기기전력",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-10",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "직류전동기 토크",
+      "back": "T = pZΦIa / (2πa)",
+      "unit": "[N·m]",
+      "note": null,
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "S3-직류토크",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-11",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "토크와 출력의 관계",
+      "back": "T = P/ω = 60P / (2πN)",
+      "unit": "[N·m]",
+      "note": "N: [rpm]",
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "S3-토크출력",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-12",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "직류 분권발전기 단자전압",
+      "back": "V = E − IaRa",
+      "unit": "[V]",
+      "note": "발전기는 E가 V보다 큼",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S3-발전기단자전압",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-13",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "직류전동기 역기전력",
+      "back": "E = V − IaRa",
+      "unit": "[V]",
+      "note": "전동기는 V가 E보다 큼",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S3-역기전력",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-14",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "직류전동기 회전속도",
+      "back": "N = K(V − IaRa) / Φ",
+      "unit": "[rpm]",
+      "note": "자속에 반비례",
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "S3-직류속도",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S3-15",
+      "subject": "S3",
+      "subjectName": "전기기기",
+      "front": "단권변압기 자기용량 / 부하용량",
+      "back": "자기용량 / 부하용량 = (Vh − Vℓ) / Vh",
+      "unit": null,
+      "note": "Vh: 고압측, Vℓ: 저압측",
+      "types": [
+        "blank",
+        "calc"
+      ],
+      "concept": "S3-단권변압기",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-01",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "옴의 법칙",
+      "back": "V = IR",
+      "unit": "[V]",
+      "note": null,
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S4-옴",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-02",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "직렬 합성저항",
+      "back": "R = R₁ + R₂ + …",
+      "unit": "[Ω]",
+      "note": null,
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "S4-직렬저항",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-03",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "병렬 합성저항 (2개)",
+      "back": "R = R₁R₂ / (R₁ + R₂)",
+      "unit": "[Ω]",
+      "note": "같은 저항 n개 병렬이면 R/n",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S4-병렬저항",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-04",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "전력 (직류)",
+      "back": "P = VI = I²R = V²/R",
+      "unit": "[W]",
+      "note": null,
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S4-전력",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-05",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "유도성 리액턴스",
+      "back": "XL = ωL = 2πfL",
+      "unit": "[Ω]",
+      "note": "주파수에 비례",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S4-유도리액턴스",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-06",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "용량성 리액턴스",
+      "back": "XC = 1/(ωC) = 1/(2πfC)",
+      "unit": "[Ω]",
+      "note": "주파수에 반비례",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S4-용량리액턴스",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-07",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "RLC 직렬 임피던스",
+      "back": "Z = R + j(XL − XC)",
+      "unit": "[Ω]",
+      "note": "|Z| = √(R² + (XL − XC)²)",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S4-RLC-임피던스",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-08",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "공진주파수",
+      "back": "f₀ = 1 / (2π√(LC))",
+      "unit": "[Hz]",
+      "note": "직렬 공진 시 XL = XC, 임피던스 최소",
+      "types": [
+        "choice",
+        "blank",
+        "calc"
+      ],
+      "concept": "S4-RLC-공진",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-09",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "정현파 실효값",
+      "back": "V = Vm / √2",
+      "unit": "[V]",
+      "note": "Vm: 최댓값",
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "S4-실효값",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-10",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "정현파 평균값",
+      "back": "Vav = 2Vm / π",
+      "unit": "[V]",
+      "note": "≈ 0.637Vm",
+      "types": [
+        "choice",
+        "calc"
+      ],
+      "concept": "S4-평균값",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-11",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "Y결선 전압·전류 관계",
+      "back": "Vℓ = √3·Vp, Iℓ = Ip",
+      "unit": null,
+      "note": "선간전압이 상전압보다 30° 앞섬",
+      "types": [
+        "choice",
+        "match",
+        "calc"
+      ],
+      "concept": "S4-Y결선",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-12",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "Δ결선 전압·전류 관계",
+      "back": "Vℓ = Vp, Iℓ = √3·Ip",
+      "unit": null,
+      "note": "선전류가 상전류보다 30° 뒤짐",
+      "types": [
+        "choice",
+        "match",
+        "calc"
+      ],
+      "concept": "S4-Δ결선",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-13",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "RL 회로 시정수",
+      "back": "τ = L / R",
+      "unit": "[s]",
+      "note": null,
+      "types": [
+        "choice",
+        "match",
+        "calc"
+      ],
+      "concept": "S4-시정수-RL",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-14",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "RC 회로 시정수",
+      "back": "τ = RC",
+      "unit": "[s]",
+      "note": null,
+      "types": [
+        "choice",
+        "match",
+        "calc"
+      ],
+      "concept": "S4-시정수-RC",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-15",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "키르히호프 전류 법칙 (KCL)",
+      "back": "마디에 들어오는 전류의 합 = 나가는 전류의 합 (ΣI = 0)",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice"
+      ],
+      "concept": "S4-KCL",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-16",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "키르히호프 전압 법칙 (KVL)",
+      "back": "폐회로의 기전력 합 = 전압강하 합 (ΣV = 0)",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice"
+      ],
+      "concept": "S4-KVL",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-17",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "무효전력",
+      "back": "Q = VI sin θ",
+      "unit": "[var]",
+      "note": null,
+      "types": [
+        "choice",
+        "match",
+        "calc"
+      ],
+      "concept": "S4-무효전력",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-18",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "전달함수의 정의",
+      "back": "G(s) = C(s) / R(s)",
+      "unit": null,
+      "note": "모든 초기값 0, 출력의 라플라스 / 입력의 라플라스",
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "S4-전달함수",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-19",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "부궁환 폐루프 전달함수",
+      "back": "C/R = G / (1 + GH)",
+      "unit": null,
+      "note": "G: 전향 경로, H: 피드백 경로",
+      "types": [
+        "choice",
+        "blank"
+      ],
+      "concept": "S4-피드백",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S4-20",
+      "subject": "S4",
+      "subjectName": "회로·제어",
+      "front": "단위계단함수의 라플라스 변환",
+      "back": "ℒ[u(t)] = 1/s",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice",
+        "match"
+      ],
+      "concept": "S4-라플라스-계단",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S5-01",
+      "subject": "S5",
+      "subjectName": "KEC",
+      "front": "저압의 범위",
+      "back": "교류 1 kV 이하, 직류 1.5 kV 이하",
+      "unit": "[kV]",
+      "note": "2021 KEC 기준",
+      "types": [
+        "choice",
+        "match"
+      ],
+      "concept": "S5-전압구분",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S5-02",
+      "subject": "S5",
+      "subjectName": "KEC",
+      "front": "고압의 범위",
+      "back": "교류 1 kV 초과 7 kV 이하, 직류 1.5 kV 초과 7 kV 이하",
+      "unit": "[kV]",
+      "note": "2021 KEC 기준",
+      "types": [
+        "choice",
+        "match"
+      ],
+      "concept": "S5-전압구분",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S5-03",
+      "subject": "S5",
+      "subjectName": "KEC",
+      "front": "특고압의 범위",
+      "back": "7 kV 초과",
+      "unit": "[kV]",
+      "note": "교류·직류 공통",
+      "types": [
+        "choice",
+        "match"
+      ],
+      "concept": "S5-전압구분",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S5-04",
+      "subject": "S5",
+      "subjectName": "KEC",
+      "front": "상도체 L1 색상",
+      "back": "갈색",
+      "unit": null,
+      "note": null,
+      "types": [
+        "match"
+      ],
+      "concept": "S5-전선색상",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S5-05",
+      "subject": "S5",
+      "subjectName": "KEC",
+      "front": "상도체 L2 색상",
+      "back": "흑색",
+      "unit": null,
+      "note": null,
+      "types": [
+        "match"
+      ],
+      "concept": "S5-전선색상",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S5-06",
+      "subject": "S5",
+      "subjectName": "KEC",
+      "front": "상도체 L3 색상",
+      "back": "회색",
+      "unit": null,
+      "note": null,
+      "types": [
+        "match"
+      ],
+      "concept": "S5-전선색상",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S5-07",
+      "subject": "S5",
+      "subjectName": "KEC",
+      "front": "중성선 N 색상",
+      "back": "청색",
+      "unit": null,
+      "note": null,
+      "types": [
+        "match"
+      ],
+      "concept": "S5-전선색상",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S5-08",
+      "subject": "S5",
+      "subjectName": "KEC",
+      "front": "보호도체 PE 색상",
+      "back": "녹색-노란색",
+      "unit": null,
+      "note": null,
+      "types": [
+        "match"
+      ],
+      "concept": "S5-전선색상",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S5-09",
+      "subject": "S5",
+      "subjectName": "KEC",
+      "front": "접지시스템의 구분",
+      "back": "계통접지, 보호접지, 피뢰시스템 접지",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice"
+      ],
+      "concept": "S5-접지구분",
+      "status": "대기",
+      "reviewed": false
+    },
+    {
+      "id": "S5-10",
+      "subject": "S5",
+      "subjectName": "KEC",
+      "front": "계통접지 방식",
+      "back": "TN, TT, IT 계통",
+      "unit": null,
+      "note": null,
+      "types": [
+        "choice"
+      ],
+      "concept": "S5-계통접지",
+      "status": "대기",
+      "reviewed": false
+    }
+  ]
+}

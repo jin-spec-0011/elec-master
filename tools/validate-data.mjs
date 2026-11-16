@@ -7,6 +7,8 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
+import { generateDrill, evalAnswer } from '../js/drills.js';
+import { makeRng } from '../js/rng.js';
 
 export const EXPECTED_UNITS = 62;
 export const EXPECTED_TOTAL_QUESTIONS = 3361;
@@ -205,6 +207,58 @@ export function validateQuests(qDoc, cardsDoc = null) {
   return r;
 }
 
+/**
+ * 계산 드릴 템플릿 검증: 카드 연결, 수식 컴파일, 자리표시 치환, 예시값(독립 계산한 정답)과 일치 여부.
+ * @param {unknown} doc drills.json 파싱 결과
+ * @param {unknown} [cardsDoc] cards.json 파싱 결과
+ */
+export function validateDrills(doc, cardsDoc = null) {
+  const r = result();
+  if (!isObj(doc) || !Array.isArray(doc.templates)) {
+    r.errors.push('drills: { templates: [] } 구조가 아닙니다.');
+    return r;
+  }
+  const cardsById = new Map((cardsDoc?.cards ?? []).map((c) => [c.id, c]));
+  const ids = new Set();
+  const bySubject = {};
+  for (const t of doc.templates) {
+    const tag = `drills: ${t?.id ?? '(id 없음)'}`;
+    if (!isObj(t)) {
+      r.errors.push(`${tag} 객체가 아닙니다.`);
+      continue;
+    }
+    if (!/^DR-[A-Za-z0-9-]+$/.test(t.id ?? '')) r.errors.push(`${tag} ID 형식이 올바르지 않습니다.`);
+    if (ids.has(t.id)) r.errors.push(`${tag} ID 중복`);
+    ids.add(t.id);
+    if (!/^(M|S[1-5])$/.test(t.subject ?? '')) r.errors.push(`${tag} subject 오류(${t.subject})`);
+    if (cardsDoc) {
+      const card = cardsById.get(t.card);
+      if (!card) r.errors.push(`${tag} 카드 ${t.card}가 cards.json에 없습니다.`);
+      else if (card.subject !== t.subject) r.errors.push(`${tag} 카드 과목(${card.subject})과 subject(${t.subject})가 다릅니다.`);
+    }
+    if (!Number.isInteger(t.decimals ?? 2) || (t.decimals ?? 2) < 0 || (t.decimals ?? 2) > 6) r.errors.push(`${tag} decimals는 0~6 정수여야 합니다.`);
+    if (!(typeof (t.tol ?? 0.01) === 'number' && (t.tol ?? 0.01) > 0 && (t.tol ?? 0.01) <= 0.1)) r.errors.push(`${tag} tol은 0 초과 0.1 이하여야 합니다.`);
+    try {
+      const rng = makeRng(2026);
+      for (let i = 0; i < 60; i += 1) {
+        const q = generateDrill(t, rng);
+        if (!Number.isFinite(q.answer)) throw new Error('정답이 유한한 수가 아닙니다.');
+        if (/[{}]|NaN|undefined|Infinity/.test(`${q.stem}${q.solution}`)) throw new Error(`치환되지 않은 값이 있습니다: ${q.stem}`);
+      }
+      const ex = t.example;
+      if (!isObj(ex) || !isObj(ex.vars) || typeof ex.answer !== 'number') throw new Error('example({vars, answer})이 필요합니다.');
+      const got = evalAnswer(t, ex.vars);
+      if (Math.abs(got - ex.answer) > 1e-9) throw new Error(`예시값 불일치: 계산 ${got} ≠ 독립 계산 ${ex.answer}`);
+    } catch (e) {
+      r.errors.push(`${tag} ${e.message}`);
+    }
+    bySubject[t.subject] = (bySubject[t.subject] ?? 0) + 1;
+  }
+  if (doc.count !== doc.templates.length) r.errors.push(`drills: count(${doc.count})와 실제 개수(${doc.templates.length})가 다릅니다.`);
+  r.info.push(`drills: 템플릿 ${doc.templates.length}개 (${Object.entries(bySubject).map(([k, n]) => `${k} ${n}`).join(', ')})`);
+  return r;
+}
+
 /** @param {unknown} rules database.rules.json 파싱 결과 (전용 DB에 그대로 게시하는 독립 규칙 전체) */
 export function validateRules(rules) {
   const r = result();
@@ -258,6 +312,7 @@ function main() {
     ['freqmap', 'data/freqmap.json', (j) => validateFreqmap(j), true],
     ['cards', 'data/cards.json', (j) => validateCards(j, { strict: values.strict }), true],
     ['quests', 'data/quests/ch1.json', (j, ctx) => validateQuests(j, ctx.cards), false],
+    ['drills', 'data/drills.json', (j, ctx) => validateDrills(j, ctx.cards), true],
     ['rules', 'database.rules.json', (j) => validateRules(j), true],
   ];
   const ctx = { cards: null };

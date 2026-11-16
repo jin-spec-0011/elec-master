@@ -1,6 +1,6 @@
 import { APP_VERSION } from './version.js';
 import { TABS } from './tabs.js';
-import { startRouter } from './router.js';
+import { startRouter, FULLSCREEN_ROUTES } from './router.js';
 import { h, clear, iconNode } from './dom.js';
 import { loadAll, resolveDevMode } from './data.js';
 import { createAuth } from './auth.js';
@@ -16,6 +16,8 @@ const VIEWS = {
   stats: () => import('./ui/stats.js'),
   profile: () => import('./ui/profile.js'),
   session: () => import('./ui/session.js'),
+  quiz: () => import('./ui/quiz.js'),
+  drill: () => import('./ui/drill.js'),
 };
 
 const auth = createAuth();
@@ -84,7 +86,7 @@ async function boot() {
   async function renderRoute(loc) {
     app.route = loc;
     markActive(tabbar, loc.tab);
-    document.body.classList.toggle('in-session', loc.id === 'session');
+    document.body.classList.toggle('in-session', FULLSCREEN_ROUTES.includes(loc.id));
     if (!app.data) return;
     try {
       const mod = await VIEWS[loc.id]();

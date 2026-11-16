@@ -3,6 +3,7 @@ export const DATA_FILES = {
   cards: 'data/cards.json',
   quests: 'data/quests/ch1.json',
   freqmap: 'data/freqmap.json',
+  drills: 'data/drills.json',
 };
 
 export class DataError extends Error {
@@ -32,6 +33,15 @@ export function validateQuestsDoc(doc) {
 
 export function validateFreqmapDoc(doc) {
   if (!doc || typeof doc.units !== 'object' || doc.units === null) throw new DataError('freqmap.json 형식이 올바르지 않습니다.');
+  return doc;
+}
+
+export function validateDrillsDoc(doc) {
+  if (!doc || !Array.isArray(doc.templates)) throw new DataError('drills.json 형식이 올바르지 않습니다.');
+  for (const t of doc.templates) {
+    const ok = t && typeof t.id === 'string' && typeof t.subject === 'string' && typeof t.stem === 'string' && typeof t.answer === 'string' && typeof t.solution === 'string';
+    if (!ok) throw new DataError(`드릴 템플릿 형식 오류: ${t?.id ?? '(id 없음)'}`);
+  }
   return doc;
 }
 
@@ -79,22 +89,25 @@ export async function fetchJson(url, fetchFn = globalThis.fetch) {
 
 /**
  * 앱에 필요한 데이터를 모두 읽고 검증한다.
- * @returns {Promise<{ cardsAll: object[], cards: object[], quests: object[], freqmap: object, dev: boolean }>}
+ * @returns {Promise<{ cardsAll: object[], cards: object[], quests: object[], freqmap: object, drills: object[], dev: boolean }>}
  */
 export async function loadAll({ dev = false, fetchFn } = {}) {
-  const [cardsDoc, questsDoc, freqmap] = await Promise.all([
+  const [cardsDoc, questsDoc, freqmap, drillsDoc] = await Promise.all([
     fetchJson(DATA_FILES.cards, fetchFn),
     fetchJson(DATA_FILES.quests, fetchFn),
     fetchJson(DATA_FILES.freqmap, fetchFn),
+    fetchJson(DATA_FILES.drills, fetchFn),
   ]);
   validateCardsDoc(cardsDoc);
   validateQuestsDoc(questsDoc);
   validateFreqmapDoc(freqmap);
+  validateDrillsDoc(drillsDoc);
   return {
     cardsAll: cardsDoc.cards,
     cards: selectCards(cardsDoc.cards, { dev }),
     quests: questsDoc.quests,
     freqmap,
+    drills: drillsDoc.templates,
     dev,
   };
 }

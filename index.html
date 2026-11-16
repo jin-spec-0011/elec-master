@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>전기기사 마스터</title>
+  <meta name="description" content="2027 전기기사 필기·실기 퀘스트형 학습 앱">
+  <meta name="theme-color" content="#2563eb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="전기마스터">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <h1 class="brand"><span class="brand-dot" aria-hidden="true"></span>전기기사 마스터</h1>
+      <span id="status-chip" class="chip" role="status">확인 중…</span>
+    </header>
+    <main id="view" class="view" tabindex="-1" aria-live="polite">
+      <p class="loading">불러오는 중…</p>
+    </main>
+    <nav id="tabbar" class="tabbar" aria-label="주요 메뉴"></nav>
+  </div>
+  <noscript>
+    <p class="noscript">이 앱은 JavaScript가 필요합니다. 브라우저 설정에서 JavaScript를 켜 주세요.</p>
+  </noscript>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

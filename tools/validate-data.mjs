@@ -127,8 +127,9 @@ export function validateCards(cardsDoc, opts = {}) {
 
 /**
  * @param {unknown} qDoc quests/ch1.json 파싱 결과
+ * @param {unknown} [cardsDoc] cards.json 파싱 결과 (있으면 cards_correct 범위 지표를 교차 검증)
  */
-export function validateQuests(qDoc) {
+export function validateQuests(qDoc, cardsDoc = null) {
   const r = result();
   if (!isObj(qDoc) || !Array.isArray(qDoc.quests)) {
     r.errors.push('quests: { quests: [] } 구조가 아닙니다.');
@@ -177,6 +178,20 @@ export function validateQuests(qDoc) {
     state.set(id, 2);
   };
   for (const id of byId.keys()) if (!state.has(id)) visit(id);
+
+  // cards_correct:<시작ID>..<끝ID> 지표는 cards.json의 실제 카드 범위와 목표값을 대조한다.
+  if (isObj(cardsDoc) && Array.isArray(cardsDoc.cards)) {
+    const order = cardsDoc.cards.map((c) => c.id);
+    for (const q of quests) {
+      const m = typeof q.metric === 'string' ? q.metric.match(/^cards_correct:([^.]+)\.\.(.+)$/) : null;
+      if (!m) continue;
+      const a = order.indexOf(m[1]);
+      const b = order.indexOf(m[2]);
+      if (a < 0 || b < 0) r.errors.push(`quests: ${q.id} 지표의 카드ID가 cards.json에 없습니다(${m[1]}..${m[2]}).`);
+      else if (a > b) r.errors.push(`quests: ${q.id} 지표의 카드 범위 순서가 거꾸로입니다(${m[1]}..${m[2]}).`);
+      else if (q.target > b - a + 1) r.errors.push(`quests: ${q.id} 목표값 ${q.target}이 범위 카드 수 ${b - a + 1}보다 큽니다.`);
+    }
+  }
 
   const roots = quests.filter((q) => q.type !== 'daily' && (q.prereq?.length ?? 0) === 0);
   if (quests.length > 0 && roots.length === 0) r.errors.push('quests: 선행 없는 시작 퀘스트가 없습니다(해금 불가).');
@@ -238,9 +253,10 @@ function main() {
   const targets = [
     ['freqmap', 'data/freqmap.json', (j) => validateFreqmap(j), true],
     ['cards', 'data/cards.json', (j) => validateCards(j, { strict: values.strict }), true],
-    ['quests', 'data/quests/ch1.json', (j) => validateQuests(j), false],
+    ['quests', 'data/quests/ch1.json', (j, ctx) => validateQuests(j, ctx.cards), false],
     ['rules', 'database.rules.json', (j) => validateRules(j), true],
   ];
+  const ctx = { cards: null };
   for (const [label, rel, fn, required] of targets) {
     const path = join(values.dir, rel);
     if (!existsSync(path)) {
@@ -248,7 +264,10 @@ function main() {
       continue;
     }
     const json = readJson(path, all.errors, label);
-    if (json !== null) merge(fn(json));
+    if (json !== null) {
+      if (label === 'cards') ctx.cards = json;
+      merge(fn(json, ctx));
+    }
   }
 
   console.log('== 정보 ==');

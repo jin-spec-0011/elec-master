@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "chapter": 1,
+  "source": "data/src/quests-ch1.csv",
+  "count": 16,
+  "quests": [
+    {
+      "id": "Q1-01",
+      "type": "main",
+      "title": "첫 번째 카드",
+      "condition": "공식카드 5장을 열어 확인한다",
+      "xp": 20,
+      "reward": "칭호:견습 전기공",
+      "prereq": [],
+      "metric": "cards_seen",
+      "target": 5
+    },
+    {
+      "id": "Q1-02",
+      "type": "main",
+      "title": "삼각함수 정의",
+      "condition": "삼각함수 카드 7장(M01~M07)을 정답 처리한다",
+      "xp": 30,
+      "reward": null,
+      "prereq": [
+        "Q1-01"
+      ],
+      "metric": "cards_correct:M01..M07",
+      "target": 7
+    },
+    {
+      "id": "Q1-03",
+      "type": "main",
+      "title": "호도법과 각주파수",
+      "condition": "호도법·각주파수 카드 2장(M08~M09)을 정답 처리한다",
+      "xp": 30,
+      "reward": null,
+      "prereq": [
+        "Q1-02"
+      ],
+      "metric": "cards_correct:M08..M09",
+      "target": 2
+    },
+    {
+      "id": "Q1-04",
+      "type": "main",
+      "title": "복소수 기초",
+      "condition": "복소수 기초 카드 4장(M10~M13)을 정답 처리한다",
+      "xp": 40,
+      "reward": null,
+      "prereq": [
+        "Q1-03"
+      ],
+      "metric": "cards_correct:M10..M13",
+      "target": 4
+    },
+    {
+      "id": "Q1-05",
+      "type": "main",
+      "title": "극형식 연산",
+      "condition": "극형식·켤레·오일러 카드 4장(M14~M17)을 정답 처리한다",
+      "xp": 40,
+      "reward": null,
+      "prereq": [
+        "Q1-04"
+      ],
+      "metric": "cards_correct:M14..M17",
+      "target": 4
+    },
+    {
+      "id": "Q1-06",
+      "type": "main",
+      "title": "미분·적분 기초",
+      "condition": "삼각·지수 미적분 카드 3장(M18~M20)을 정답 처리한다",
+      "xp": 40,
+      "reward": null,
+      "prereq": [
+        "Q1-03"
+      ],
+      "metric": "cards_correct:M18..M20",
+      "target": 3
+    },
+    {
+      "id": "Q1-07",
+      "type": "main",
+      "title": "기초수학 계산 드릴",
+      "condition": "기초수학 계산 드릴에서 누적 20문항을 맞힌다",
+      "xp": 60,
+      "reward": "칭호:수학 워밍업",
+      "prereq": [
+        "Q1-05",
+        "Q1-06"
+      ],
+      "metric": "drill_correct:M",
+      "target": 20
+    },
+    {
+      "id": "Q1-08",
+      "type": "main",
+      "title": "전기자기학 공식",
+      "condition": "전기자기학 카드 20장(S1-01~S1-20) 중 16장을 정답 처리한다",
+      "xp": 80,
+      "reward": null,
+      "prereq": [
+        "Q1-07"
+      ],
+      "metric": "cards_correct:S1-01..S1-20",
+      "target": 16
+    },
+    {
+      "id": "Q1-09",
+      "type": "main",
+      "title": "전력공학 공식",
+      "condition": "전력공학 카드 15장(S2-01~S2-15) 중 12장을 정답 처리한다",
+      "xp": 70,
+      "reward": null,
+      "prereq": [
+        "Q1-08"
+      ],
+      "metric": "cards_correct:S2-01..S2-15",
+      "target": 12
+    },
+    {
+      "id": "Q1-10",
+      "type": "main",
+      "title": "전기기기 공식",
+      "condition": "전기기기 카드 15장(S3-01~S3-15) 중 12장을 정답 처리한다",
+      "xp": 70,
+      "reward": null,
+      "prereq": [
+        "Q1-09"
+      ],
+      "metric": "cards_correct:S3-01..S3-15",
+      "target": 12
+    },
+    {
+      "id": "Q1-11",
+      "type": "main",
+      "title": "회로·제어 공식",
+      "condition": "회로·제어 카드 20장(S4-01~S4-20) 중 16장을 정답 처리한다",
+      "xp": 80,
+      "reward": null,
+      "prereq": [
+        "Q1-10"
+      ],
+      "metric": "cards_correct:S4-01..S4-20",
+      "target": 16
+    },
+    {
+      "id": "Q1-12",
+      "type": "main",
+      "title": "KEC 기본",
+      "condition": "KEC 카드 10장(S5-01~S5-10) 중 8장을 정답 처리한다",
+      "xp": 60,
+      "reward": null,
+      "prereq": [
+        "Q1-11"
+      ],
+      "metric": "cards_correct:S5-01..S5-10",
+      "target": 8
+    },
+    {
+      "id": "Q1-13",
+      "type": "boss",
+      "title": "1챕터 보스",
+      "condition": "보스전 10문항 중 8문항을 하트 3개 안에서 맞힌다",
+      "xp": 150,
+      "reward": "칭호:기초 마스터",
+      "prereq": [
+        "Q1-12"
+      ],
+      "metric": "boss_ch1_correct",
+      "target": 8
+    },
+    {
+      "id": "D-01",
+      "type": "daily",
+      "title": "오늘의 복습",
+      "condition": "오늘 공식카드 10장을 복습한다",
+      "xp": 15,
+      "reward": null,
+      "prereq": [],
+      "metric": "daily_cards_reviewed",
+      "target": 10
+    },
+    {
+      "id": "D-02",
+      "type": "daily",
+      "title": "계산 한 판",
+      "condition": "오늘 계산 드릴에서 5문항을 맞힌다",
+      "xp": 20,
+      "reward": null,
+      "prereq": [],
+      "metric": "daily_drill_correct",
+      "target": 5
+    },
+    {
+      "id": "D-03",
+      "type": "daily",
+      "title": "복습 큐 비우기",
+      "condition": "오늘 복습 예정 카드를 모두 처리한다",
+      "xp": 25,
+      "reward": null,
+      "prereq": [],
+      "metric": "daily_due_cleared",
+      "target": 1
+    }
+  ]
+}

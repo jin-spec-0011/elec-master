@@ -1,5 +1,7 @@
 {
   "rules": {
+    ".read": false,
+    ".write": false,
     "elec": {
       "pool": {
         ".read": "auth != null",

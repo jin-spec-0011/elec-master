@@ -205,7 +205,7 @@ export function validateQuests(qDoc, cardsDoc = null) {
   return r;
 }
 
-/** @param {unknown} rules database.rules.json 파싱 결과 (elec 블록만 담은 병합용 파일) */
+/** @param {unknown} rules database.rules.json 파싱 결과 (전용 DB에 그대로 게시하는 독립 규칙 전체) */
 export function validateRules(rules) {
   const r = result();
   const elec = rules?.rules?.elec;
@@ -213,8 +213,12 @@ export function validateRules(rules) {
     r.errors.push('rules: rules.elec 블록이 없습니다.');
     return r;
   }
-  if (Object.keys(rules.rules).some((k) => k !== 'elec')) {
-    r.errors.push('rules: 병합용 파일에는 elec 블록만 있어야 합니다(기존 GOGO 규칙과 섞이면 안 됨).');
+  if (rules.rules['.read'] !== false || rules.rules['.write'] !== false) {
+    r.errors.push('rules: 루트 ".read"와 ".write"는 false(기본 거부)여야 합니다.');
+  }
+  const extra = Object.keys(rules.rules).filter((k) => k !== 'elec' && k !== '.read' && k !== '.write');
+  if (extra.length > 0) {
+    r.errors.push(`rules: 전용 DB에는 elec 외 경로가 없어야 합니다(발견: ${extra.join(', ')}).`);
   }
   for (const k of ['pool', 'meta']) {
     if (elec[k]?.['.write'] !== false) r.errors.push(`rules: elec.${k}.\".write\"는 false여야 합니다.`);
@@ -223,7 +227,7 @@ export function validateRules(rules) {
   const u = elec.users?.$uid;
   if (u?.['.read'] !== 'auth != null && auth.uid === $uid') r.errors.push('rules: elec.users.$uid .read가 본인 한정이 아닙니다.');
   if (u?.['.write'] !== 'auth != null && auth.uid === $uid') r.errors.push('rules: elec.users.$uid .write가 본인 한정이 아닙니다.');
-  r.info.push('rules: elec 블록 구조 확인 완료');
+  r.info.push('rules: 독립 규칙(루트 기본 거부 + elec 블록) 구조 확인 완료');
   return r;
 }
 
